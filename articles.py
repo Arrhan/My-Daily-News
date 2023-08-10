@@ -24,45 +24,32 @@ technology = 'OR Bill Gates OR Zuckerberg OR Musk OR ChatGPT OR A.I. OR artifica
 politics = 'OR Republicans OR GOP OR G.O.P. OR Biden OR Democrats OR Modi OR Jinpeng OR elections '
 other = 'OR global warming OR heat OR university OR college admissions OR Obama'
 trend_topics = ''
-trending_tech_topics='OR '
-trending_business_topics='OR '
+trending_tech_topics=''
 
 #Adding google trends to trending_topics
 for i in range(0,15):
     trend_topics+=google_trends.trending_topics[0][i] + " OR "
-
-#Adding tech_search keywords to trending_tech_topics
+trending_topics=str(trend_topics)+'researchers'
+#Adding tech_search keywords to tech_topics
+tech_topics=''
 if len(google_trends.tech_searches)<15:
     for i in range(0,len(google_trends.tech_searches)):
-        for j in range(0,len(google_trends.tech_searches['entityNames'][i])):
-            trending_tech_topics+=google_trends.tech_searches['entityNames'][i][j] + " OR "
+        tech_point=google_trends.tech_searches['title'][i].replace(", "," OR ")
+        tech_topics+=tech_point+" OR "
 else:
     for i in range(0,15):
-        for j in range(0,len(google_trends.tech_searches['entityNames'][i])):
-            trending_tech_topics+=google_trends.tech_searches['entityNames'][i][j] + " OR "
+        tech_point=google_trends.tech_searches['title'][i].replace(", "," OR ")
+        tech_topics+=tech_point+" OR "
 
-#Adding business_search keywords to trending_business_topics
-if len(google_trends.business_searches)<15:
-    for i in range(0,len(google_trends.business_searches)):
-        for j in range(0,len(google_trends.business_searches['entityNames'][i])):
-            trending_business_topics+=google_trends.business_searches['entityNames'][i][j] + " OR "
-else:
-    for i in range(0,15):
-        for j in range(0,len(google_trends.business_searches['entityNames'][i])):
-            trending_business_topics+=google_trends.business_searches['entityNames'][i][j] + " OR "
+tech_topics=str(tech_topics)+"scientist OR scientists"
 
 #Final list of topics to sift for news articles REMOVE LAST OR FROM trending_topics
 main_topics = economy+technology+business+politics+other
-trending_topics=str(trend_topics)+'researchers'
-trending_tech_topics=str(trending_tech_topics)+'scientists OR scientist'
-trending_business_topics=trending_business_topics+'research'
-print(trending_topics)
-print(main_topics)
 
-#ARTICLES ------
+#MAIN ARTICLES ------
 conn = http.client.HTTPConnection('api.mediastack.com')
 
-params_tech = urllib.parse.urlencode({
+params_main = urllib.parse.urlencode({
     'access_key': '78bacb491fd29aad5689fd3809353ba9',
     'keywords': main_topics,
     'sources': 'cnn,nytimes',
@@ -71,11 +58,46 @@ params_tech = urllib.parse.urlencode({
     'limit': 45
     })
 
-conn.request('GET', '/v1/news?{}'.format(params_tech))
+conn.request('GET', '/v1/news?{}'.format(params_main))
 
 res = conn.getresponse()
 data = res.read()
 articles = data.decode('utf-8')
 
-print("CNN and NYTimes articles:")
-print(articles)
+print("Main articles:")
+print(articles+'\n')
+print("Articles on trending topics:")
+
+#TREND ARTICLES -----
+params_trend = urllib.parse.urlencode({
+    'access_key': '78bacb491fd29aad5689fd3809353ba9',
+    'keywords': trend_topics,
+    'sources': 'cnn,nytimes',
+    'sort':'popularity',
+    'date': previous_date,
+    'limit': 45
+    })
+conn.request('GET', '/v1/news?{}'.format(params_trend))
+
+res = conn.getresponse()
+data = res.read()
+trending_articles = data.decode('utf-8')
+print(trending_articles+'\n')
+
+print("Articles on trending tech topics:")
+
+#TREND TECH ARTICLES ------
+params_tech = urllib.parse.urlencode({
+    'access_key': '78bacb491fd29aad5689fd3809353ba9',
+    'keywords': str(tech_topics),
+    'sources': 'cnn,nytimes',
+    'sort':'popularity',
+    'date': previous_date,
+    'limit': 45
+    })
+conn.request('GET', '/v1/news?{}'.format(params_tech))
+
+res = conn.getresponse()
+data = res.read()
+trending_tech_articles = data.decode('utf-8')
+print(trending_tech_articles)

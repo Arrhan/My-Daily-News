@@ -1,6 +1,7 @@
 import datetime
 import pandas as pd
 from newsapi import NewsApiClient
+import google_trends
 
 #Setting dates to get news articles from last 24 hours
 current_date = datetime.datetime.today().strftime ('%Y-%m-%d')
@@ -35,12 +36,5 @@ other_headlines = newsapi.get_top_headlines(country="us",
                                             category='general',
                                             page_size= 10
                                                )
-
-#print(wsj_headlines['articles'])
-#print(tech_headlines['articles'])
-#print(business_headlines['articles'])
-#print(other_headlines['articles'])
-
-#WSJ articles ------ *******
 
 #SAVING ARTICLES TO A DATABASE (CSV FORMAT AND SAVE TO COMPUTER FOR NOW) - LATER USED TO ADD TO WEBSITE ------
