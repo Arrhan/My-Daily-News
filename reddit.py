@@ -14,7 +14,7 @@ reddit = praw.Reddit(
     username=user_agent
 )
 
-#Getting top posts (greater than 1k upvotes) in last 24 hours from r/news and r/technology
+#Getting top posts (greater than 1k upvotes) in last 24 hours
 rnews= reddit.subreddit("news+technology+worldnews")
 top_rnews = rnews.top(time_filter='day')
 minimum_upvotes = 1000
