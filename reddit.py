@@ -1,4 +1,5 @@
 import praw
+import pandas as pd
 
 client_id = "34nmqpP4jMviHnP42jrSFw"
 client_secret = "1kDyV5593u6sh__od4HcUZ8CXCBy_A"
@@ -34,3 +35,4 @@ for post in top_rpolitics:
         top_news_posts.append(post.url)
 
 # CONVERT LIST TO DATABASE format
+top_news_posts=pd.DataFrame(top_news_posts)

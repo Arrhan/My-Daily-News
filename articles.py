@@ -3,7 +3,10 @@ import datetime
 import reddit
 import google_trends
 import pandas as pd
+import json
 
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
 pd.set_option('display.max_colwidth', None)
 
 #Reddit news
@@ -65,7 +68,12 @@ data = res.read()
 articles = data.decode('utf-8')
 
 print("Main articles:")
-print(articles+'\n')
+#Converting JSON output to pandas dataframe
+parsed_data = json.loads(articles)
+article_data = parsed_data["data"]
+df = pd.DataFrame(article_data)
+print(df)
+
 print("Articles on trending topics:")
 
 #TREND ARTICLES -----
@@ -82,7 +90,11 @@ conn.request('GET', '/v1/news?{}'.format(params_trend))
 res = conn.getresponse()
 data = res.read()
 trending_articles = data.decode('utf-8')
-print(trending_articles+'\n')
+
+parsed_data = json.loads(trending_articles)
+article_data = parsed_data["data"]
+df = pd.DataFrame(article_data)
+print(df)
 
 print("Articles on trending tech topics:")
 
@@ -100,4 +112,8 @@ conn.request('GET', '/v1/news?{}'.format(params_tech))
 res = conn.getresponse()
 data = res.read()
 trending_tech_articles = data.decode('utf-8')
-print(trending_tech_articles)
+
+parsed_data = json.loads(trending_tech_articles)
+article_data = parsed_data["data"]
+df = pd.DataFrame(article_data)
+print(df)

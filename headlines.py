@@ -1,7 +1,7 @@
 import datetime
 import pandas as pd
 from newsapi import NewsApiClient
-import google_trends
+import json
 
 #Setting dates to get news articles from last 24 hours
 current_date = datetime.datetime.today().strftime ('%Y-%m-%d')
@@ -24,17 +24,43 @@ newsapi = NewsApiClient(api_key='6de831c22296464bb0323ebb5b9a9bfd')
 
 #HEADLINES ------
 wsj_headlines = newsapi.get_top_headlines(sources='the-wall-street-journal')
+
+json_string = json.dumps(wsj_headlines)
+parsed_data = json.loads(json_string)
+articles_data = parsed_data["articles"]
+df = pd.DataFrame(articles_data)
+print(df)
+
 tech_headlines = newsapi.get_top_headlines(country="us",
                                            category='technology',
                                            page_size= 10
                                            )
+
+json_string = json.dumps(tech_headlines)
+parsed_data = json.loads(json_string)
+articles_data = parsed_data["articles"]
+df = pd.DataFrame(articles_data)
+print(df)
+
 business_headlines = newsapi.get_top_headlines(country="us",
                                                category='business',
                                                page_size= 10
                                                )
+
+json_string = json.dumps(business_headlines)
+parsed_data = json.loads(json_string)
+articles_data = parsed_data["articles"]
+df = pd.DataFrame(articles_data)
+print(df)
+
 other_headlines = newsapi.get_top_headlines(country="us",
                                             category='general',
                                             page_size= 10
                                                )
 
+json_string = json.dumps(other_headlines)
+parsed_data = json.loads(json_string)
+articles_data = parsed_data["articles"]
+df = pd.DataFrame(articles_data)
+print(df)
 #SAVING ARTICLES TO A DATABASE (CSV FORMAT AND SAVE TO COMPUTER FOR NOW) - LATER USED TO ADD TO WEBSITE ------
