@@ -1,7 +1,7 @@
 #Data extraction for analysis
 keywords =['OpenAI','Google','Microsoft','Amazon','Facebook','Twitter','Biden','Trump','Modi','Apple']
 #Sources
-sources = ['Reuters','Reddit','Twitter | Techcrunch']
+sources = ['Reddit','NYtimes','AP News']
 
 #Reddit: posts and comments
 import praw

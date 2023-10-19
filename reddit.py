@@ -17,7 +17,7 @@ reddit = praw.Reddit(
 #Getting top posts (greater than 1k upvotes) in last 24 hours
 rnews= reddit.subreddit("news+technology+worldnews")
 top_rnews = rnews.top(time_filter='day')
-minimum_upvotes = 1000
+minimum_upvotes = 3000
 top_news_posts = []
 
 for post in top_rnews:
@@ -27,7 +27,7 @@ for post in top_rnews:
 #r/politics (greater than 5k upovtes)
 rpolitics = reddit.subreddit("politics")
 top_rpolitics = rpolitics.top(time_filter='day')
-politics_upovtes = 7000
+politics_upovtes = 9000
 
 politics=[]
 for post in top_rpolitics:

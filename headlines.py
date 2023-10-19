@@ -3,7 +3,7 @@ import pandas as pd
 from newsapi import NewsApiClient
 import json
 
-#Setting dates to get news articles from last 24 hours
+#Setting dates to get news articles from last 5 days
 current_date = datetime.datetime.today().strftime ('%Y-%m-%d')
 
 previous_date = datetime.datetime.today() - datetime.timedelta(days=5)
@@ -33,7 +33,7 @@ print(df)
 
 tech_headlines = newsapi.get_top_headlines(country="us",
                                            category='technology',
-                                           page_size= 10
+                                           page_size= 7
                                            )
 
 json_string = json.dumps(tech_headlines)
@@ -44,7 +44,7 @@ print(df)
 
 business_headlines = newsapi.get_top_headlines(country="us",
                                                category='business',
-                                               page_size= 10
+                                               page_size= 7
                                                )
 
 json_string = json.dumps(business_headlines)
@@ -55,7 +55,7 @@ print(df)
 
 other_headlines = newsapi.get_top_headlines(country="us",
                                             category='general',
-                                            page_size= 10
+                                            page_size= 7
                                                )
 
 json_string = json.dumps(other_headlines)
@@ -63,4 +63,5 @@ parsed_data = json.loads(json_string)
 articles_data = parsed_data["articles"]
 df = pd.DataFrame(articles_data)
 print(df)
+
 #SAVING ARTICLES TO A DATABASE (CSV FORMAT AND SAVE TO COMPUTER FOR NOW) - LATER USED TO ADD TO WEBSITE ------

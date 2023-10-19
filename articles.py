@@ -4,10 +4,11 @@ import reddit
 import google_trends
 import pandas as pd
 import json
+import re
 
-pd.set_option('display.max_rows', None)
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_colwidth', None)
+#pd.set_option('display.max_rows', None)
+#pd.set_option('display.max_columns', None)
+#pd.set_option('display.max_colwidth', None)
 
 #Reddit news
 print("Top News from reddit:")
@@ -33,20 +34,19 @@ trending_tech_topics=''
 for i in range(0,15):
     trend_topics+=google_trends.trending_topics[0][i] + " OR "
 trending_topics=str(trend_topics)+'researchers'
+
 #Adding tech_search keywords to tech_topics
-tech_topics=''
-if len(google_trends.tech_searches)<15:
-    for i in range(0,len(google_trends.tech_searches)):
-        tech_point=google_trends.tech_searches['title'][i].replace(", "," OR ")
-        tech_topics+=tech_point+" OR "
-else:
-    for i in range(0,15):
-        tech_point=google_trends.tech_searches['title'][i].replace(", "," OR ")
-        tech_topics+=tech_point+" OR "
+for i in range(0,20):
+    tech_point=google_trends.tech_searches['title'][i].replace(", "," OR ")
+    trending_tech_topics+=tech_point+" OR "
 
-tech_topics=str(tech_topics)+"scientist OR scientists"
+tech_topics=str(trending_tech_topics)+"scientists"
 
-#Final list of topics to sift for news articles REMOVE LAST OR FROM trending_topics
+#Removing all non alphanumer chaarcters except space for tech_topics and trending_topics to ensure compatible with keyword functionality
+tech_topics = re.sub(r'[^A-Za-z0-9. ]+', '', tech_topics)
+trending_topics = re.sub(r'[^A-Za-z0-9. ]+', '', trending_topics)
+
+#Final list of topics to sift for news articles
 main_topics = economy+technology+business+politics+other
 
 #MAIN ARTICLES ------
@@ -76,7 +76,7 @@ print(df)
 
 print("Articles on trending topics:")
 
-#TREND ARTICLES -----
+#TRENDING ARTICLES -----
 params_trend = urllib.parse.urlencode({
     'access_key': '78bacb491fd29aad5689fd3809353ba9',
     'keywords': trend_topics,
@@ -98,12 +98,12 @@ print(df)
 
 print("Articles on trending tech topics:")
 
-#TREND TECH ARTICLES ------
+#TRENDING TECH ARTICLES ------
 params_tech = urllib.parse.urlencode({
     'access_key': '78bacb491fd29aad5689fd3809353ba9',
-    'keywords': str(tech_topics),
-    'sources': 'cnn,nytimes',
+    'keywords': tech_topics,
     'sort':'popularity',
+    'sources': 'cnn,nytimes',
     'date': previous_date,
     'limit': 45
     })
@@ -113,6 +113,7 @@ res = conn.getresponse()
 data = res.read()
 trending_tech_articles = data.decode('utf-8')
 
+#Converting JSON to pandas dataframe
 parsed_data = json.loads(trending_tech_articles)
 article_data = parsed_data["data"]
 df = pd.DataFrame(article_data)
