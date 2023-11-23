@@ -33,6 +33,3 @@ politics=[]
 for post in top_rpolitics:
     if post.ups >= politics_upovtes:
         top_news_posts.append(post.url)
-
-# CONVERT LIST TO DATABASE format
-top_news_posts=pd.DataFrame(top_news_posts)

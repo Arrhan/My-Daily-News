@@ -10,10 +10,10 @@ import re
 #pd.set_option('display.max_columns', None)
 #pd.set_option('display.max_colwidth', None)
 
-#Reddit news
-print("Top News from reddit:")
-print(reddit.top_news_posts)
-print('\n')
+#Reddit news - Adding reddit post articles
+reddit_article_links=[]
+for i in reddit.top_news_posts:
+    reddit_article_links.append(i)
 
 #Setting dates to get news articles from last 24 hours
 current_date = datetime.datetime.today().strftime ('%Y-%m-%d')
@@ -67,14 +67,16 @@ res = conn.getresponse()
 data = res.read()
 articles = data.decode('utf-8')
 
-print("Main articles:")
-#Converting JSON output to pandas dataframe
-parsed_data = json.loads(articles)
-article_data = parsed_data["data"]
-df = pd.DataFrame(article_data)
-print(df)
+#Generating list of URL and titles for main articles
+main_articles_dict=json.loads(articles)
+main_articles=[]
+for i in main_articles_dict['data']:
+    main_articles_art={}
+    main_articles_art['title']=i['title']
+    main_articles_art['link']=i['url']
+    main_articles.append(main_articles_art)
 
-print("Articles on trending topics:")
+#print("Articles on trending topics:")
 
 #TRENDING ARTICLES -----
 params_trend = urllib.parse.urlencode({
@@ -91,12 +93,14 @@ res = conn.getresponse()
 data = res.read()
 trending_articles = data.decode('utf-8')
 
-parsed_data = json.loads(trending_articles)
-article_data = parsed_data["data"]
-df = pd.DataFrame(article_data)
-print(df)
-
-print("Articles on trending tech topics:")
+#Generating list of URL and titles for trending  articles
+trending_articles_dict=json.loads(trending_articles)
+trending_articles=[]
+for i in trending_articles_dict['data']:
+    trending_articles_art={}
+    trending_articles_art['title']=i['title']
+    trending_articles_art['link']=i['url']
+    trending_articles.append(trending_articles_art)
 
 #TRENDING TECH ARTICLES ------
 params_tech = urllib.parse.urlencode({
@@ -113,8 +117,11 @@ res = conn.getresponse()
 data = res.read()
 trending_tech_articles = data.decode('utf-8')
 
-#Converting JSON to pandas dataframe
-parsed_data = json.loads(trending_tech_articles)
-article_data = parsed_data["data"]
-df = pd.DataFrame(article_data)
-print(df)
+#Generating list of URL and titles for trending tech articles
+trending_tech_articles_dict=json.loads(trending_tech_articles)
+trending_tech_articles=[]
+for i in trending_tech_articles_dict['data']:
+    trending_tech_articles_art={}
+    trending_tech_articles_art['title']=i['title']
+    trending_tech_articles_art['link']=i['url']
+    trending_tech_articles.append(trending_tech_articles_art)

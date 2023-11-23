@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily News Digest</title>
+    <title>Arrhan's Daily News Digest</title>
+    <link rel="stylesheet" href="./style.css"/>
+</head>
+<body>
+    <h1>Arrhan's Daily News</h1>
+    <p>This website provides a list of news articles updated daily, that are curated to the interests of Arrhan. The main goal of this website is to be a one stop place for updating oneself about what is happening around the world.</p>
+    <hr />
+    <h2 id="Reddit">Reddit Articles:</h2>
+    <ul>
+        {% for link in Rlinks %}
+            <li><a href="{{ link }}">{{ link}}</a></li>
+        {% endfor %}
+    </ul>
+    <hr />
+    <h2 id="Main">Main Articles:</h2>
+    <ul>
+        {% for link in Mlinks %}
+            <li><a href="{{ link['link'] }}">{{ link['title'] }}</a></li>
+        {% endfor %}
+    </ul>
+    <hr />
+    <h2 id="TrendingT">Trending Tech Articles:</h2>
+    <ul>
+        {% for link in TTlinks %}
+            <li><a href="{{ link['link'] }}">{{ link['title'] }}</a></li>
+        {% endfor %}
+    </ul>
+    <hr />
+    <h2 id="Trending">Trending Articles:</h2>
+    <ul>
+        {% for link in Tlinks %}
+            <li><a href="{{ link['link'] }}">{{ link['title'] }}</a></li>
+        {% endfor %}
+    </ul>
+    <hr />
+</body>
+</html>
