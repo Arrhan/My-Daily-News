@@ -73,6 +73,7 @@ googleapis-common-protos==1.61.0
 googletransx==2.4.2
 greenlet==3.0.0
 grpcio==1.56.0
+gunicorn==21.2.0
 h11==0.13.0
 h5py==3.9.0
 html5lib==1.1
